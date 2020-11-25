@@ -25,9 +25,9 @@ app.options('*', cors())
  */
 
 app.get('/api/v1', (req, res) => {
-    res.json({
-        message: "Welcome to Biscoff Bakery API"
-    })
+  res.json({
+    message: "Welcome to Biscoff Bakery API"
+  })
 })
 
 // user registration
@@ -45,13 +45,13 @@ app.get('/api/v1/clusters', mainController.getclusters)
 
 
 // connect to DB, then inititate Express app
-mongoose.connect( mongoURI, { useNewUrlParser: true, useUnifiedTopology: true } )
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(response => {
     // DB connected successfully
     console.log('DB connection successful')
 
     app.listen(process.env.PORT || port, () => {
-      console.log(`Biscoff Bakery app listening on port: ${port}`)
+      console.log(`Dengue Heatmap app listening on port: ${port}`)
     })
   })
   .catch(err => {
@@ -61,7 +61,7 @@ mongoose.connect( mongoURI, { useNewUrlParser: true, useUnifiedTopology: true } 
 function verifyJWT(req, res, next) {
   // get the jwt token from the request header
   const authToken = req.headers.auth_token
-  
+
   // check if authToken header value is empty, return err if empty
   if (!authToken) {
     res.json({
@@ -78,7 +78,7 @@ function verifyJWT(req, res, next) {
       algorithms: ['HS384']
     })
     next()
-  } catch(err) {
+  } catch (err) {
     // if fail, return error msg
     res.json({
       success: false,
