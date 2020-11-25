@@ -26,7 +26,7 @@ app.options('*', cors())
 
 app.get('/api/v1', (req, res) => {
   res.json({
-    message: "Welcome to Biscoff Bakery API"
+    message: "Welcome to Dengue Heatmap API"
   })
 })
 

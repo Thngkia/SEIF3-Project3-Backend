@@ -23,21 +23,22 @@ const controllers = {
                 const salt = uuid.v4()
 
                 // hash combination using bcrypt
-                const combination = salt + "123"
+                const combination = salt + req.body.password
 
                 // hash the combination using SHA256
                 const hash = SHA256(combination).toString()
 
                 // create user in DB
                 UserModel.create({
-                    first_name: "test",
-                    last_name: "test",
-                    email: "test@test.com",
+                    name: req.body.name,
+                    email: req.body.email,
                     pwsalt: salt,
-                    hash: hash
+                    hash: hash,
+                    location: req.body.location,
+                    number: req.body.number
                 })
                     .then(createResult => {
-                        res.redirect('/products')
+                        res.redirect('/')
                     })
                     .catch(err => {
                         res.redirect('/users/register')
