@@ -1,11 +1,11 @@
 const axios = require('axios')
 
 const controllers = {
-    getclusters: (req,res) => {
+    getclusters: (req, res) => {
         axios({
             method: 'get',
             url: 'https://www.nea.gov.sg/api/OneMap/GetMapData/DENGUE_CLUSTER',
-            })
+        })
             .then(result => {
                 // clean up api by converting to a Json obj and then into an array from api
                 let clustersApi = (JSON.parse(result.data)).SrchResults.slice(1)
@@ -16,11 +16,11 @@ const controllers = {
                     // init array for each hot spot
                     let oneSpotCoords = []
                     // loop through each hot spot to and split the latlng by "|"
-                    item.LatLng.split("|").forEach (item => {
+                    item.LatLng.split("|").forEach(item => {
                         let coordsArr = item.split(",")
                         let obj = {
-                            "lat" : coordsArr[0],
-                            "lng" : coordsArr[1]
+                            "lat": Number(coordsArr[0]),
+                            "lng": Number(coordsArr[1])
                         }
                         // push into each spot
                         oneSpotCoords.push(obj)
@@ -31,7 +31,7 @@ const controllers = {
                 res.send(fullCoords)
             })
     }
-    
-} 
+
+}
 
 module.exports = controllers
