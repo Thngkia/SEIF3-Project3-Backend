@@ -42,6 +42,9 @@ app.get('/api/v1/users/profile', verifyJWT, usersController.getUserProfile)
 //api route
 app.get('/api/v1/clusters', mainController.getclusters)
 
+// seed user route
+app.get('/api/v1/seedUser', usersController.seedUsers)
+
 
 
 // connect to DB, then inititate Express app

@@ -119,7 +119,32 @@ const controllers = {
         res.json({
             data: "dummy"
         })
-    }
+    },
+
+    seedUsers: (req, res) => {
+        const salt = uuid.v4()
+
+        // hash combination using bcrypt
+        const combination = salt + "123"
+
+        // hash the combination using SHA256
+        const hash = SHA256(combination).toString()
+
+        UserModel.create({
+            name: "test2",
+            email: "test@test2.com",
+            pwsalt: salt,
+            hash: hash,
+            location: "test",
+            number: 12345678
+        })
+            .then(createResult => {
+                res.send("seed success")
+            })
+            .catch(err => {
+                res.send("seed fail")
+            })
+    },
 
 }
 
