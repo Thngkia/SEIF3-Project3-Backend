@@ -26,7 +26,7 @@ app.options('*', cors())
 
 app.get('/api/v1', (req, res) => {
   res.json({
-    message: "Welcome to Biscoff Bakery API"
+    message: "Welcome to Dengue Heatmap API"
   })
 })
 
@@ -41,6 +41,9 @@ app.get('/api/v1/users/profile', verifyJWT, usersController.getUserProfile)
 
 //api route
 app.get('/api/v1/clusters', mainController.getclusters)
+
+// seed user route
+app.get('/api/v1/seedUser', usersController.seedUsers)
 
 
 
