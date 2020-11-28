@@ -38,7 +38,7 @@ const controllers = {
                     number: req.body.number
                 })
                     .then(createResult => {
-                        res.redirect('/')
+                        res.redirect('/login')
                     })
                     .catch(err => {
                         res.redirect('/users/register')
