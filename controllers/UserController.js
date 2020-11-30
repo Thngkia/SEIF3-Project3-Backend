@@ -65,7 +65,7 @@ const controllers = {
 
     login: (req, res) => {
         // validate input here on your own
-
+        
         // gets user with the given email
         UserModel.findOne({
             email: req.body.email
@@ -93,11 +93,9 @@ const controllers = {
                     })
                     return
                 }
-
                 // login successful, generate JWT
                 const token = jwt.sign({
-                    first_name: result.first_name,
-                    last_name: result.last_name,
+                    name: result.name,
                     email: result.email,
                 }, process.env.JWT_SECRET, {
                     algorithm: 'HS384',
