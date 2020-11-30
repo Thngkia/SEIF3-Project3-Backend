@@ -35,6 +35,7 @@ app.get('/api/v1', (req, res) => {
 
 // user login route
 app.post('/api/v1/users/login', usersController.login)
+app.post('/api/v1/users/register', usersController.register)
 
 // user profile route
 app.get('/api/v1/users/profile', verifyJWT, usersController.getUserProfile)

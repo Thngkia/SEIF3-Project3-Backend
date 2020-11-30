@@ -6,7 +6,6 @@ const UserModel = require('../models/users')
 const controllers = {
     register: (req, res) => {
         // try the library at https://ajv.js.org/ to validate user's input
-
         UserModel.findOne({
             email: req.body.email
         })
@@ -34,19 +33,33 @@ const controllers = {
                     email: req.body.email,
                     pwsalt: salt,
                     hash: hash,
-                    location: req.body.location,
-                    number: req.body.number
+                    location: req.body.address,
+                    number: req.body.phone
                 })
                     .then(createResult => {
-                        res.redirect('/login')
+                        res.statusCode = 201
+                        res.json({
+                            "success": true,
+                            "message": "User Created"
+                        })
+                        return
                     })
                     .catch(err => {
-                        res.redirect('/users/register')
+                        res.statusCode = 401
+                        res.json({
+                            "success": false,
+                            "message": "Form error. User not created"
+                        })
+                        return
                     })
             })
             .catch(err => {
-                console.log(err)
-                res.redirect('/users/register')
+                res.statusCode = 500
+                res.json({
+                    "success": false,
+                    "message": "Unable to create user"
+                })
+                return
             })
     },
 
