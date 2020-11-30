@@ -6,7 +6,6 @@ const UserModel = require('../models/users')
 const controllers = {
     register: (req, res) => {
         // try the library at https://ajv.js.org/ to validate user's input
-
         UserModel.findOne({
             email: req.body.email
         })
@@ -34,25 +33,39 @@ const controllers = {
                     email: req.body.email,
                     pwsalt: salt,
                     hash: hash,
-                    location: req.body.location,
-                    number: req.body.number
+                    location: req.body.address,
+                    number: req.body.phone
                 })
                     .then(createResult => {
-                        res.redirect('/login')
+                        res.statusCode = 201
+                        res.json({
+                            "success": true,
+                            "message": "User Created"
+                        })
+                        return
                     })
                     .catch(err => {
-                        res.redirect('/users/register')
+                        res.statusCode = 401
+                        res.json({
+                            "success": false,
+                            "message": "Form error. User not created"
+                        })
+                        return
                     })
             })
             .catch(err => {
-                console.log(err)
-                res.redirect('/users/register')
+                res.statusCode = 500
+                res.json({
+                    "success": false,
+                    "message": "Unable to create user"
+                })
+                return
             })
     },
 
     login: (req, res) => {
         // validate input here on your own
-
+        
         // gets user with the given email
         UserModel.findOne({
             email: req.body.email
@@ -80,11 +93,9 @@ const controllers = {
                     })
                     return
                 }
-
                 // login successful, generate JWT
                 const token = jwt.sign({
-                    first_name: result.first_name,
-                    last_name: result.last_name,
+                    name: result.name,
                     email: result.email,
                 }, process.env.JWT_SECRET, {
                     algorithm: 'HS384',
