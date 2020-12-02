@@ -30,6 +30,13 @@ const controllers = {
                 })
                 res.send(fullCoords)
             })
+    },
+    findLatLng: (req, res) => {
+        console.log(req)
+        res.json({
+            "success": true,
+            "message": "LatLng found"
+        })
     }
 
 }
