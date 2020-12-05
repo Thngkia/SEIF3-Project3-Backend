@@ -5,11 +5,17 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const usersController = require('./controllers/UserController')
 const mainController = require('./controllers/MainController')
+const bodyParser = require('body-parser')
 const app = express();
 const port = process.env.PORT;
 
 const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}/${process.env.DB_NAME}`
 mongoose.set('useFindAndModify', false)
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(express.urlencoded({
   extended: true
