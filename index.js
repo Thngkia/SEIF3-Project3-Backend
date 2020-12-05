@@ -45,6 +45,9 @@ app.get('/api/v1/clusters', mainController.getclusters)
 // seed user route
 app.get('/api/v1/seedUser', usersController.seedUsers)
 
+// get nearest risk distance
+app.post('/api/v1/getNearestRiskAreaDistance', mainController.getNearestRiskAreaDistance)
+
 
 
 // connect to DB, then inititate Express app
