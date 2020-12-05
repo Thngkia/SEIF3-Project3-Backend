@@ -19,7 +19,7 @@ const controllers = {
                     })
                     return
                 }
-                res.send(result)
+                res.send(result[0].api)
             })
     },
     findLatLng: (req, res) => {
