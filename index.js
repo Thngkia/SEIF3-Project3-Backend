@@ -8,6 +8,8 @@ const mainController = require('./controllers/MainController')
 const bodyParser = require('body-parser')
 const app = express();
 const port = process.env.PORT;
+const cron = require('node-cron');
+
 
 const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}/${process.env.DB_NAME}`
 mongoose.set('useFindAndModify', false)
@@ -46,7 +48,8 @@ app.post('/api/v1/users/login', usersController.login)
 app.get('/api/v1/users/profile', verifyJWT, usersController.getUserProfile)
 
 //api route
-app.get('/api/v1/clusters', mainController.getclusters)
+app.get('/api/v1/clusters', mainController.getClusters)
+app.get('/api/v1/storeclusters', mainController.storeClusters)
 
 // seed user route
 app.get('/api/v1/seedUser', usersController.seedUsers)
@@ -55,6 +58,12 @@ app.get('/api/v1/seedUser', usersController.seedUsers)
 app.post('/api/v1/getNearestRiskAreaDistance', mainController.getNearestRiskAreaDistance)
 
 
+cron.schedule('0 8 * * *', () => {
+  mainController.storeClusters()
+}, {
+  scheduled: true,
+  timezone: "Asia/Singapore"
+});
 
 // connect to DB, then inititate Express app
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
