@@ -9,8 +9,8 @@ const controllers = {
         return
     },
     getClusters: (req, res) => {
-        ApiModel.find({}).sort({date: -1}).limit(1)
-            .then (result => {
+        ApiModel.find({}).sort({ date: -1 }).limit(1)
+            .then(result => {
                 if (!result) {
                     res.statusCode = 401
                     res.json({
@@ -41,9 +41,9 @@ const controllers = {
                 High: extractRiskAreasLocations(clustersApi, "high"),
                 Medium: extractRiskAreasLocations(clustersApi, "medium")
             }
-            const { riskAreaType, minimumDistance, isWithinRiskArea } = getMinimumDistanceToRiskArea(riskAreas, req.body.LatLng)
+            const { riskAreaType, minimumDistance, isWithinRiskArea, riskAreaColor } = getMinimumDistanceToRiskArea(riskAreas, req.body.LatLng)
             console.log("get nearest risk area distance")
-            res.send({ riskAreaType, minimumDistance, isWithinRiskArea })
+            res.send({ riskAreaType, minimumDistance, isWithinRiskArea, riskAreaColor })
         })
     }
 }
@@ -61,6 +61,7 @@ function getMinimumDistanceToRiskArea(riskAreas, lat) {
     let minimumDistance = 0
     let highRiskAreaLocations = []
     let mediumRiskAreaLocations = []
+    let riskAreaColor = ""
     //seperate locations into high and low
     //locations is the locations of high and medium, return two array, this is temporary
     for (const [riskArea, locations] of Object.entries(riskAreas)) {
@@ -79,16 +80,18 @@ function getMinimumDistanceToRiskArea(riskAreas, lat) {
         riskAreaType = "High"
         minimumDistance = highRiskAttribute.minimumDistance
         isWithinRiskArea = true
+        riskAreaColor = "red"
     } else { // If not then check within medium risk area
         const mediumRiskAttribute = findSafeDistanceFromRiskArea(mediumRiskAreaLocations, lat)
         if (mediumRiskAttribute.isWithinRiskArea) {
             riskAreaType = "Medium"
             minimumDistance = mediumRiskAttribute.minimumDistance
             isWithinRiskArea = true
+            riskAreaColor = "yellow"
         }
     }
 
-    return { riskAreaType, minimumDistance, isWithinRiskArea }
+    return { riskAreaType, minimumDistance, isWithinRiskArea, riskAreaColor }
 }
 
 /**
@@ -196,7 +199,7 @@ let storeClusters = () => {
                 // push into full coords
                 fullCoords.push(oneSpotCoords)
             })
-    
+
             // set color based on size
             fullCoords.forEach(item => {
                 if (item.size > 9) {
@@ -220,7 +223,7 @@ let storeClusters = () => {
             })
             console.log("API store fail")
             return
-        })    
+        })
 }
 
 module.exports = controllers
