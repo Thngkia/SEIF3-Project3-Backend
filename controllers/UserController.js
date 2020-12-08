@@ -10,24 +10,27 @@ const controllers = {
             email: req.body.email
         })
             .then(result => {
-                // if found in DB, means email has already been take, redirect to registration page
+                // if email exists in DB, means email has already been taken, redirect to registration page
                 if (result) {
-                    res.redirect('/users/register')
+                    console.log("Email is registered")
+                    res.json({
+                        "success": false,
+                        "message": "Registered Account",
+                    })
                     return
                 }
 
-                // no document found in DB, can proceed with registration
-
-                // generate uuid as salt
+                // Email address not in DB, can proceed with registration
+                // 1. generate uuid as salt
                 const salt = uuid.v4()
 
-                // hash combination using bcrypt
+                // 2. hash combination using bcrypt
                 const combination = salt + req.body.password
 
-                // hash the combination using SHA256
+                // 3. hash the combination using SHA256
                 const hash = SHA256(combination).toString()
 
-                // create user in DB
+                // 4. create user in DB
                 UserModel.create({
                     name: req.body.name,
                     email: req.body.email,
@@ -40,7 +43,7 @@ const controllers = {
                         res.statusCode = 201
                         res.json({
                             "success": true,
-                            "message": "User Created"
+                            "message": "Account Created"
                         })
                         return
                     })
@@ -65,7 +68,7 @@ const controllers = {
 
     login: (req, res) => {
         // validate input here on your own
-        
+
         // gets user with the given email
         UserModel.findOne({
             email: req.body.email

@@ -39,7 +39,7 @@ app.get('/api/v1', (req, res) => {
 })
 
 // user registration
-// app.post('/api/v1/users/register', usersController.register)
+app.post('/api/v1/users/register', usersController.register)
 
 // user login route
 app.post('/api/v1/users/login', usersController.login)
