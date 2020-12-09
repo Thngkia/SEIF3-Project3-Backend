@@ -129,7 +129,7 @@ function findSafeDistanceFromRiskArea(riskAreaLocations, currentLocation) {
  */
 function calculateDistance(fromPoint, toPoint) {
 
-    console.log(toPoint.split(",")[0], "calcualte distance")
+    // console.log(toPoint.split(",")[0], "calculate distance")
 
     let fromPointLat = fromPoint.split(",")[0]
     let fromPointLng = fromPoint.split(",")[1]
