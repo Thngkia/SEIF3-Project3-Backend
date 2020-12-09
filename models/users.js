@@ -39,6 +39,11 @@ const userSchema = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now
+    },
+    searchLocation: {
+        type: Array,
+        required: false,
+        default: []
     }
 })
 

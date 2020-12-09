@@ -57,6 +57,10 @@ app.get('/api/v1/seedUser', usersController.seedUsers)
 // get nearest risk distance
 app.post('/api/v1/getNearestRiskAreaDistance', mainController.getNearestRiskAreaDistance)
 
+//saved locations for registerd user
+app.post('/api/v1/getUsersSavedLocations', usersController.getUsersSearchLocation)
+//saved locations for registerd user
+app.post('/api/v1/addUserSavedLocations', usersController.AddUsersSearchLocation)
 
 cron.schedule('0 8 * * *', () => {
   mainController.storeClusters()
