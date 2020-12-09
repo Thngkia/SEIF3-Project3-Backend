@@ -180,10 +180,10 @@ const controllers = {
         })
             .then(result => {
                 let userData = JSON.parse(JSON.stringify(result))
-                if (userData.searchLocation.length === 4) {
+                if (!req.body.edit && userData.searchLocation.length === 4) {
                     return res.json({ success: false, message: "You can have a maximum of 4 saved locations" })
                 }
-                let index = userData.searchLocation.findIndex(x => req.body.item.locationText === x.locationText)
+                let index = userData.searchLocation.findIndex(x => req.body.item.tempID === x.tempID)
                 if (index !== -1) {
                     userData.searchLocation[index] = req.body.item
                 } else {
@@ -197,6 +197,37 @@ const controllers = {
                     })
             })
     },
+
+    DeleteSavedLocation: (req, res) => {
+        UserModel.findOne({
+            email: req.body.email
+        })
+            .then(result => {
+                let userData = JSON.parse(JSON.stringify(result))
+                let index = userData.searchLocation.findIndex(x => req.body.item.tempID === x.tempID)
+                if (index !== -1) {
+                    userData.searchLocation.splice(index, 1)
+                } else {
+                    return res.json({ success: false, message: "Something Went Wrong" })
+                }
+                UserModel.updateOne({
+                    email: req.body.email
+                }, { $set: { searchLocation: userData.searchLocation } })
+                    .then(() => {
+                        // res.json({ success: true, message: "Item Deleted Successfully" })
+                        UserModel.findOne({
+                            email: req.body.email
+                        })
+                            .then(result => {
+                                res.json({
+                                    success: true,
+                                    searchLocation: result.searchLocation,
+                                    userDetails: result
+                                })
+                            })
+                    })
+            })
+    }
 }
 
 module.exports = controllers

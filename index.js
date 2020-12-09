@@ -59,8 +59,10 @@ app.post('/api/v1/getNearestRiskAreaDistance', mainController.getNearestRiskArea
 
 //saved locations for registerd user
 app.post('/api/v1/getUsersSavedLocations', usersController.getUsersSearchLocation)
-//saved locations for registerd user
+//add locations for registerd user
 app.post('/api/v1/addUserSavedLocations', usersController.AddUsersSearchLocation)
+//delete locations for registerd user
+app.post('/api/v1/deleteUserSavedLocations', usersController.DeleteSavedLocation)
 
 cron.schedule('0 8 * * *', () => {
   mainController.storeClusters()
