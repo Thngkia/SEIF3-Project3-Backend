@@ -7,7 +7,7 @@ const usersController = require('./controllers/UserController')
 const mainController = require('./controllers/MainController')
 const bodyParser = require('body-parser')
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 const cron = require('node-cron');
 
 
@@ -71,7 +71,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     // DB connected successfully
     console.log('DB connection successful')
 
-    app.listen(process.env.PORT || port, () => {
+    app.listen(port, () => {
       console.log(`Dengue Heatmap app listening on port: ${port}`)
     })
   })
