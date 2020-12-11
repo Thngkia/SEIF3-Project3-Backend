@@ -37,54 +37,40 @@ const controllers = {
             "message": "LatLng found"
         })
     },
-    CalculateSavedLocation: (req, res) => {
+    notifyUsersInRiskArea: (req, res) => {
+        console.log("notifyUsersInRiskArea called")
         UserModel.find()
             .then(async result => {
                 // if (res)
                 // res.json(result)
                 let publicData = await ApiModel.find()
-                // const msg = {
-                //     to: 'test@example.com',
-                //     from: 'test@example.com',
-                //     subject: "Dengue Heatmap Warning",
-                //     text: `You are within ${x["minimumDistance"]} of risk area`
-                // }
-                console.log(publicData.length)
-                console.log(result.length)
                 if (result && result.length > 0) {
-                    let finalResult = result.filter(x => x["latLng"] && x["emailNotification"]).map(x => {
+                    // Filter all the users who needs to be notified by email
+                    let toBeNotifiedUsers = result.filter(x => x["latLng"] && x["emailNotification"]).map(x => {
                         let data = getMinimumDistanceToRiskArea(publicData[0]["api"][0], x.latLng)
+                        data.email = x["email"]
                         return { ...x, ...data }
                     })
-                    console.log(finalResult.length)
-                    if (finalResult && finalResult.length > 0) {
-                        let peopleRisk = finalResult.filter(x => x["isWithinRiskArea"])
+                    if (toBeNotifiedUsers && toBeNotifiedUsers.length > 0) {
+                        // Filter all the users who are within the risk area
+                        let peopleRisk = toBeNotifiedUsers.filter(x => x["isWithinRiskArea"])
                         console.log(JSON.stringify(peopleRisk.length))
                         if (peopleRisk.length > 0) {
-                            let finalEmailArray = []
+                            console.log("people in risk area")
+                            // let finalEmailArray = []
                             peopleRisk.forEach(x => {
-                                finalEmailArray.push(
-                                    //     {
-                                    //     email: x["email"],
-                                    //     msg: `You are within ${x["minimumDistance"]} of risk area`
-                                    // }
-                                )
+                                sendEmail(x["email"], `You are within ${x["minimumDistance"]} of risk area`)
+                                // finalEmailArray.push(
+                                //     {
+                                //         email: x["email"],
+                                //         msg: `You are within ${x["minimumDistance"]} of risk area`
+                                //     }
+                                // )
                             })
-                            console.log(finalEmailArray)
-                            //trigger email
-
                         }
                     }
                 }
-                sgMail
-                    .send(msg)
-                    .then(() => {
-                        console.log('Email sent')
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    })
-                res.json({})
+                // res.json({})
             })
     },
     //function which takes request and response as input parameters
@@ -295,12 +281,12 @@ let storeClusters = () => {
         })
 }
 
-let sendEmail = () => {
+let sendEmail = (toAddress, mailContent) => {
     const msg = {
-        to: 'dengueheatmap@gmail.com',
+        to: toAddress,
         from: 'dengueheatmap@gmail.com',
         subject: "Dengue Heatmap Warning",
-        text: `You are within 150m of risk area`
+        text: mailContent
     }
     sgMail
         .send(msg)

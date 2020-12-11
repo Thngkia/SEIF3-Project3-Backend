@@ -64,17 +64,17 @@ app.post('/api/v1/addUserSavedLocations', usersController.AddUsersSearchLocation
 //delete locations for registerd user
 app.post('/api/v1/deleteUserSavedLocations', usersController.DeleteSavedLocation)
 
-app.get('/api/v1/sendNotifications', mainController.CalculateSavedLocation);
+// app.get('/api/v1/sendNotifications', mainController.notifyUsersInRiskArea);
 
-//test route for email
-app.post('/api/v1/sendMail', mainController.sendMail)
-
-cron.schedule('0 8 * * *', () => {
+cron.schedule('* * 8 * * *', () => {
   mainController.storeClusters()
+  mainController.notifyUsersInRiskArea()
 }, {
   scheduled: true,
   timezone: "Asia/Singapore"
 });
+
+
 
 // connect to DB, then inititate Express app
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
