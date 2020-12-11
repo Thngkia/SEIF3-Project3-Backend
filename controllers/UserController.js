@@ -132,10 +132,56 @@ const controllers = {
     //     res.redirect('/users/login')
     // }
 
-    getUserProfile: (req, res) => {
-        res.json({
-            data: "dummy"
+    updateUserProfile: (req, res) => {
+
+        UserModel.findOne({
+            email: req.body.currentEmail
         })
+            .then(result => {
+                // check if result is empty, if not found user account return with error 
+                if (!result) {
+                    res.statusCode = 401
+                    res.json({
+                        "success": false,
+                        "message": "Erro in form input"
+                    })
+                    return
+                }
+
+                UserModel.updateOne({
+                    email: req.body.currentEmail
+                },
+                    {
+                        name: req.body.name,
+                        email: req.body.email,
+                        location: req.body.address,
+                        number: req.body.phone
+                    })
+                    .then(createResult => {
+                        res.statusCode = 201
+                        res.json({
+                            "success": true,
+                            "message": "Profile Updated"
+                        })
+                        return
+                    })
+                    .catch(err => {
+                        res.statusCode = 401
+                        res.json({
+                            "success": false,
+                            "message": "Form error. Profile Not Updated"
+                        })
+                        return
+                    })
+            })
+            .catch(err => {
+                res.statusCode = 500
+                res.json({
+                    "success": false,
+                    "message": "Unable to update profile"
+                })
+                return
+            })
     },
 
     seedUsers: (req, res) => {
