@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/johnleerighthere/SEIF3-Project3-Backend#readme",
   "dependencies": {
+    "@sendgrid/mail": "^7.4.0",
     "axios": "^0.21.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
@@ -27,6 +28,7 @@
     "mongoose": "^5.10.15",
     "node-cron": "^2.0.3",
     "nodemon": "^2.0.6",
+    "sendgrid": "^5.2.3",
     "uuid": "^8.3.1"
   }
 }

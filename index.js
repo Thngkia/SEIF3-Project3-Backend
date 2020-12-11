@@ -64,6 +64,11 @@ app.post('/api/v1/addUserSavedLocations', usersController.AddUsersSearchLocation
 //delete locations for registerd user
 app.post('/api/v1/deleteUserSavedLocations', usersController.DeleteSavedLocation)
 
+app.get('/api/v1/sendNotifications', mainController.CalculateSavedLocation);
+
+//test route for email
+app.post('/api/v1/sendMail', mainController.sendMail)
+
 cron.schedule('0 8 * * *', () => {
   mainController.storeClusters()
 }, {

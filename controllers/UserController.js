@@ -37,7 +37,9 @@ const controllers = {
                     pwsalt: salt,
                     hash: hash,
                     location: req.body.address,
-                    number: req.body.phone
+                    latLng: req.body.latLng,
+                    number: req.body.phone,
+                    emailNotification: req.body.email ? true : false
                 })
                     .then(createResult => {
                         res.statusCode = 201

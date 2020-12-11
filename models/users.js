@@ -44,6 +44,14 @@ const userSchema = new mongoose.Schema({
         type: Array,
         required: false,
         default: []
+    },
+    emailNotification: {
+        type: Boolean,
+        required: false
+    },
+    latLng: {
+        type: String,
+        required: true
     }
 })
 
