@@ -49,6 +49,7 @@ app.get('/api/v1/users/profile', verifyJWT, usersController.getUserProfile)
 
 //api route
 app.get('/api/v1/clusters', mainController.getClusters)
+app.get('/api/v1/getclustersfromapi', mainController.getClustersFromApi)
 app.get('/api/v1/storeclusters', mainController.storeClusters)
 
 // seed user route
